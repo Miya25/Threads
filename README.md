@@ -10,3 +10,22 @@
 <img src="https://skillicons.dev/icons?i=express,nodejs,typescript,javascript,react,mongodb,tailwind&theme=dark" />
 </div>
  
+# Setup
+- Open your Terminal in the file directory and type the lines below in order.
+(For API/Server)
+  - ```bash
+    yarn install or npm i
+    # then
+    yarn dev or npm run dev
+    ```
+
+<br />
+- Open your Terminal in the file directory and type the lines below in order.(For Client/Frontend)
+
+- ```bash
+    yarn install or npm i
+    # then
+    yarn dev or npm run dev
+    ```
+
+<br />
