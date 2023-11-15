@@ -8,7 +8,9 @@ interface IPost {
 }
 
 const PostToReplyCard: FC<IPost> = ({ postToReply }) => {
-  const { userDefaultProfileImage } = useAppSelector(state => state.userProfile)
+  const { userDefaultProfileImage } = useAppSelector(
+    (state) => state.userProfile,
+  );
 
   return (
     <div className="w-full h-auto p-3">

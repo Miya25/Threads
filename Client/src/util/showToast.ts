@@ -1,7 +1,6 @@
 import { toast } from "react-hot-toast";
 
 export const showToast = (message: string, isError?: boolean) => {
-
   if (isError) {
     return toast.error(message, {
       duration: 2000,
@@ -11,7 +10,7 @@ export const showToast = (message: string, isError?: boolean) => {
         fontSize: "12px",
         color: "#FFFAEE",
         background: "#101010",
-        textAlign: "center"
+        textAlign: "center",
       },
       iconTheme: {
         primary: "#D00000",
@@ -28,7 +27,7 @@ export const showToast = (message: string, isError?: boolean) => {
       fontSize: "12px",
       color: "#FFFAEE",
       background: "#101010",
-      textAlign: "center"
+      textAlign: "center",
     },
     iconTheme: {
       primary: "#38b000",

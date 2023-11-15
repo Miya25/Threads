@@ -8,11 +8,13 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "build-ignore-errors": "vite build --mode production || true",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier -w ./**/**/*.{ts,tsx,js,jsx}"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "moment": "^2.29.4",
+    "prettier": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.2",

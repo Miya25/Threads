@@ -1,5 +1,7 @@
-
-export function bubbleStyleUserImageWhoReplied(idx: number, imageUrls: string[]): string {
+export function bubbleStyleUserImageWhoReplied(
+  idx: number,
+  imageUrls: string[],
+): string {
   let style = "";
 
   if (imageUrls.length === 1) {
@@ -30,5 +32,5 @@ export function bubbleStyleUserImageWhoReplied(idx: number, imageUrls: string[])
         break;
     }
   }
-  return style
+  return style;
 }

@@ -23,14 +23,22 @@ interface IPostPreviewModal {
   setPostReplies: (replies: Reply[]) => void;
 }
 
-const PostPreviewModal: FC<IPostPreviewModal> = ({ postData, closeModal, didLike, repost, toggleLike, postReplies, setPostReplies }) => {
+const PostPreviewModal: FC<IPostPreviewModal> = ({
+  postData,
+  closeModal,
+  didLike,
+  repost,
+  toggleLike,
+  postReplies,
+  setPostReplies,
+}) => {
   const { user: authenticatedUser, token } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
   const [deletePostReplyMutation] = useDeletePostReplyMutation();
   const [createPostReply] = useCreatePostReplyMutation();
   const [reply, setReply] = useState<string>("");
-  const formattedTimeStamp  = useFormatTimeStamp(postData?.createdAt);
+  const formattedTimeStamp = useFormatTimeStamp(postData?.createdAt);
 
   const handleSubmitReply = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -49,7 +57,7 @@ const PostPreviewModal: FC<IPostPreviewModal> = ({ postData, closeModal, didLike
         console.log(error);
       }
     },
-    [reply, postData, createPostReply, setPostReplies, token, postReplies]
+    [reply, postData, createPostReply, setPostReplies, token, postReplies],
   );
 
   async function handleDeleteReply(replyId: string): Promise<void> {
@@ -58,7 +66,7 @@ const PostPreviewModal: FC<IPostPreviewModal> = ({ postData, closeModal, didLike
     try {
       await deletePostReplyMutation({ token, replyId });
       const updatedReplies = postReplies.filter(
-        (reply) => reply._id !== replyId
+        (reply) => reply._id !== replyId,
       );
       setPostReplies(updatedReplies);
     } catch (error) {
@@ -136,36 +144,36 @@ const PostPreviewModal: FC<IPostPreviewModal> = ({ postData, closeModal, didLike
               {/* icons */}
               <div className="flex items-center my-1 ml-[-.5rem]">
                 {/* heart */}
-                  <p
-                    className={` text-[1.3rem] p-2 rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300 ${
-                      didLike ? "text-red-500" : "text-white"
-                    } `}
-                    onClick={() => {
-                      if (!postData) return;
-                      toggleLike(postData?._id, token);
-                    }}
-                  >
-                    {didLike ? <BsHeartFill /> : <BsHeart />}
-                  </p>
+                <p
+                  className={` text-[1.3rem] p-2 rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300 ${
+                    didLike ? "text-red-500" : "text-white"
+                  } `}
+                  onClick={() => {
+                    if (!postData) return;
+                    toggleLike(postData?._id, token);
+                  }}
+                >
+                  {didLike ? <BsHeartFill /> : <BsHeart />}
+                </p>
 
                 {/* reply */}
-                  <p className="text-white text-[1.3rem] p-2 rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300">
-                    <BsChat />
-                  </p>
+                <p className="text-white text-[1.3rem] p-2 rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300">
+                  <BsChat />
+                </p>
 
                 {/* repost */}
-                  <p
-                    className="text-white text-[1.3rem] p-2 rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300"
-                    onClick={() => {
-                      if (!postData) return;
-                      repost(postData?._id);
-                    }}
-                  >
-                    <FiRepeat />
-                  </p>
+                <p
+                  className="text-white text-[1.3rem] p-2 rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300"
+                  onClick={() => {
+                    if (!postData) return;
+                    repost(postData?._id);
+                  }}
+                >
+                  <FiRepeat />
+                </p>
               </div>
               {/* end of icons */}
-              
+
               {/* reply and like count */}
               <p className="text-[#7b7575] text-xs flex items-center gap-1">
                 {postReplies.length > 0 && (
@@ -182,7 +190,6 @@ const PostPreviewModal: FC<IPostPreviewModal> = ({ postData, closeModal, didLike
                 )}
               </p>
               {/*end of reply and like count */}
-              
             </div>
           </div>
 

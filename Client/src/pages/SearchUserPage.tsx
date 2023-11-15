@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ChangeEvent } from "react";
-import { useLazyGetSearchedUsersQuery, useGetUsersQuery } from "../services/authAndUserApi";
+import {
+  useLazyGetSearchedUsersQuery,
+  useGetUsersQuery,
+} from "../services/authAndUserApi";
 import { useDebounce } from "use-debounce";
 import { BiSearch } from "react-icons/bi";
 import { RotatingLines } from "react-loader-spinner";
@@ -12,15 +15,15 @@ import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const SearchUserPage = () => {
   const [search, setSearch] = useSearchParams();
-  const { token } = useAppSelector(state => state.auth)
+  const { token } = useAppSelector((state) => state.auth);
   const [getSearchedUsers, { isFetching }] = useLazyGetSearchedUsersQuery();
   const [debounceSearchTerm] = useDebounce(search.get("user"), 900);
-  const { data: usersQuery } = useGetUsersQuery(token)
-  const { users, searchedUsers } = useAppSelector(state => state.userProfile)
+  const { data: usersQuery } = useGetUsersQuery(token);
+  const { users, searchedUsers } = useAppSelector((state) => state.userProfile);
   useDocumentTitle("Threads Clone");
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  function handleUsername(e: ChangeEvent<HTMLInputElement>){
+  function handleUsername(e: ChangeEvent<HTMLInputElement>) {
     setSearch({ user: e.target.value });
   }
 
@@ -30,7 +33,7 @@ const SearchUserPage = () => {
       if (!debounceSearchTerm) return;
       try {
         const users = await getSearchedUsers(debounceSearchTerm).unwrap();
-        dispatch(setSearchedUsers(users))
+        dispatch(setSearchedUsers(users));
       } catch (error) {
         console.error(error);
       }
@@ -41,11 +44,11 @@ const SearchUserPage = () => {
 
   // will set the users in the redux store whenever the usersQuery changes
   useEffect(() => {
-    if(usersQuery){
-      dispatch(setUsers(usersQuery))
+    if (usersQuery) {
+      dispatch(setUsers(usersQuery));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[usersQuery])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usersQuery]);
 
   return (
     <section className="bg-matteBlack w-full flex items-center justify-center pb-[100px]">
@@ -81,27 +84,28 @@ const SearchUserPage = () => {
                   visible={true}
                 />
               </div>
-            ) : (
-              searchedUsers.length === 0 && debounceSearchTerm ? 
+            ) : searchedUsers.length === 0 && debounceSearchTerm ? (
               <div className="w-full mt-8">
-                <p className="text-sm text-lightText font-light pb-8 border-b border-borderColor">No results found for "{debounceSearchTerm}"</p>
+                <p className="text-sm text-lightText font-light pb-8 border-b border-borderColor">
+                  No results found for "{debounceSearchTerm}"
+                </p>
               </div>
-              : debounceSearchTerm ?
+            ) : debounceSearchTerm ? (
               <div className="flex flex-col mt-4">
                 {searchedUsers.map((user, index) => (
                   <UserCard user={user} key={index} />
                 ))}
               </div>
-              : 
-              users && 
-              <div className="flex flex-col mt-4">
-                {users.map((user, index) => (
-                  <UserCard user={user} key={index} />
-                ))}
-              </div>
+            ) : (
+              users && (
+                <div className="flex flex-col mt-4">
+                  {users.map((user, index) => (
+                    <UserCard user={user} key={index} />
+                  ))}
+                </div>
+              )
             )}
           </div>
-
         </main>
       </div>
     </section>

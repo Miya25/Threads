@@ -43,10 +43,10 @@ const App: FC = () => {
       if (authenticatedUser) {
         dispatch(setUser(authenticatedUser));
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      if(error.status === 401){
-        localStorage.removeItem("token")
+      if (error.status === 401) {
+        localStorage.removeItem("token");
       } else console.error(error);
     }
   }
@@ -89,7 +89,7 @@ const App: FC = () => {
             </ScrollToTop>
           }
         />
-        
+
         <Route
           path="/activity"
           element={
@@ -116,18 +116,19 @@ const App: FC = () => {
             </ScrollToTop>
           }
         />
-        <Route path="/profile/:username" element={
-          <Suspense>
+        <Route
+          path="/profile/:username"
+          element={
+            <Suspense>
               <Profile />
-          </Suspense>
-        }>
+            </Suspense>
+          }
+        >
           <Route
             path="replies"
-            element={
-            <UserReplies userProfileInfo={userProfileInfo} />}
+            element={<UserReplies userProfileInfo={userProfileInfo} />}
           />
         </Route>
-
 
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />

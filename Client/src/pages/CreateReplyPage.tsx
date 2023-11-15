@@ -12,9 +12,11 @@ const CreateReplyPage = (): JSX.Element => {
   const { postToReplyId } = useParams();
   const { user: authenticatedUser } = useAppSelector((state) => state.auth);
   const { userDefaultProfileImage } = useAppSelector(
-    (state) => state.userProfile
+    (state) => state.userProfile,
   );
-  const {data: postToReply, isFetching} = useGetSinglePostQuery(postToReplyId ?? "")
+  const { data: postToReply, isFetching } = useGetSinglePostQuery(
+    postToReplyId ?? "",
+  );
   const navigate = useNavigate();
 
   return (
@@ -37,7 +39,7 @@ const CreateReplyPage = (): JSX.Element => {
             </h1>
           </div>
 
-          {isFetching || !postToReply? (
+          {isFetching || !postToReply ? (
             <div className="h-[50vh] flex items-center justify-center">
               <RotatingLines
                 strokeColor="grey"

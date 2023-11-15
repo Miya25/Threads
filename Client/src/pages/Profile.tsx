@@ -17,7 +17,7 @@ import {
   unfollowRandomUser,
   unfollowSearchedUser,
   followRandomUser,
-  followSearchedUser
+  followSearchedUser,
 } from "../features/user/userProfileSlice";
 
 import EditUserProfileModal from "../components/modals/EditUserProfileModal";
@@ -32,41 +32,64 @@ const Profile = (): JSX.Element => {
   const { username } = useParams();
   const location = useLocation();
   const { user: authenticatedUser, token } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
-  const { userProfileInfo, toEditUserInfo } =
-    useAppSelector((state) => state.userProfile);
+  const { userProfileInfo, toEditUserInfo } = useAppSelector(
+    (state) => state.userProfile,
+  );
 
   const [followMutation] = useFollowUserMutation();
   const [unfollowMutation] = useUnfollowUserMutation();
 
-  const [getUserInfoQuery, { isLoading: isUserInfoLoading }] = useLazyGetUserInfoQuery();
-  const [getPostsAndRepostsQuery, { isFetching: isFetchingPostsAndReposts }] = useLazyGetUserPostsAndRepostsQuery();
-    
+  const [getUserInfoQuery, { isLoading: isUserInfoLoading }] =
+    useLazyGetUserInfoQuery();
+  const [getPostsAndRepostsQuery, { isFetching: isFetchingPostsAndReposts }] =
+    useLazyGetUserPostsAndRepostsQuery();
+
   useDocumentTitle(
     userProfileInfo
       ? `${userProfileInfo?.name} (${userProfileInfo?.username}) on Threads`
-      : "Threads"
+      : "Threads",
   );
 
   const isActive = (currentPath: string): boolean =>
     location.pathname === currentPath;
 
   const isFollowing = userProfileInfo?.followers.some(
-    (follower) => follower._id === authenticatedUser?._id
+    (follower) => follower._id === authenticatedUser?._id,
   );
 
   function toggleFollowAndUnfollowHandler(): void {
     if (!authenticatedUser || !userProfileInfo) return;
 
     if (isFollowing) {
-      dispatch(unfollowRandomUser({ userTofollowId: userProfileInfo._id , authenticatedUser}));
-      dispatch(unfollowSearchedUser({ userTofollowId: userProfileInfo._id , authenticatedUser}));
+      dispatch(
+        unfollowRandomUser({
+          userTofollowId: userProfileInfo._id,
+          authenticatedUser,
+        }),
+      );
+      dispatch(
+        unfollowSearchedUser({
+          userTofollowId: userProfileInfo._id,
+          authenticatedUser,
+        }),
+      );
       dispatch(unfollowUser(authenticatedUser));
       unfollowMutation({ token, userToFollowId: userProfileInfo._id });
     } else {
-      dispatch(followRandomUser({ userTofollowId: userProfileInfo._id , authenticatedUser}));
-      dispatch(followSearchedUser({ userTofollowId: userProfileInfo._id , authenticatedUser}));
+      dispatch(
+        followRandomUser({
+          userTofollowId: userProfileInfo._id,
+          authenticatedUser,
+        }),
+      );
+      dispatch(
+        followSearchedUser({
+          userTofollowId: userProfileInfo._id,
+          authenticatedUser,
+        }),
+      );
       dispatch(followUser(authenticatedUser));
       followMutation({ token, userToFollowId: userProfileInfo._id });
     }
@@ -81,9 +104,11 @@ const Profile = (): JSX.Element => {
         if (user) {
           dispatch(setUserProfileInfo(user));
         }
-        
-        const userPostsAndRepostsPayload = await getPostsAndRepostsQuery(user._id).unwrap();
-  
+
+        const userPostsAndRepostsPayload = await getPostsAndRepostsQuery(
+          user._id,
+        ).unwrap();
+
         if (userPostsAndRepostsPayload) {
           if (user._id === authenticatedUser?._id && authenticatedUser) {
             dispatch(setUserPostsAndReposts(userPostsAndRepostsPayload));
@@ -96,9 +121,8 @@ const Profile = (): JSX.Element => {
       }
     }
     getUserInfoAndPostsAndReposts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [username]);
-
 
   return (
     <section className="bg-matteBlack w-full flex py-[90px] justify-center">
@@ -156,7 +180,7 @@ const Profile = (): JSX.Element => {
             isActive={isActive}
             isFetchingPostsAndReposts={isFetchingPostsAndReposts}
           />
-          
+
           {/* nested route */}
           {/* this is the where the user replies will render */}
           <Outlet />

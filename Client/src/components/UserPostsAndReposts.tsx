@@ -11,7 +11,7 @@ interface IUserPostsAndReposts {
   userProfileInfo: User | null;
   authenticatedUser: User | null;
   token: string;
-  isFetchingPostsAndReposts: boolean
+  isFetchingPostsAndReposts: boolean;
 }
 
 const UserPostsAndReposts: FC<IUserPostsAndReposts> = ({
@@ -19,9 +19,11 @@ const UserPostsAndReposts: FC<IUserPostsAndReposts> = ({
   userProfileInfo,
   authenticatedUser,
   token,
-  isFetchingPostsAndReposts
+  isFetchingPostsAndReposts,
 }) => {
-  const { userPostsAndReposts, otherUserPostsAndReposts } = useAppSelector((state) => state.userProfile);
+  const { userPostsAndReposts, otherUserPostsAndReposts } = useAppSelector(
+    (state) => state.userProfile,
+  );
   // helper function that filters the posts and reposts of the user and returns an array of user reposts
   const userReposts = filteredUserReposts(userPostsAndReposts);
 
@@ -39,13 +41,23 @@ const UserPostsAndReposts: FC<IUserPostsAndReposts> = ({
                 visible={true}
               />
             </div>
-          ) : (userProfileInfo?._id === authenticatedUser?._id ? userPostsAndReposts : otherUserPostsAndReposts).length === 0 ? (
-            <p className="text-lightText text-sm mt-4">{userProfileInfo?._id === authenticatedUser?._id ? "You haven't posted any threads yet." : "No threads yet."}</p>
+          ) : (userProfileInfo?._id === authenticatedUser?._id
+              ? userPostsAndReposts
+              : otherUserPostsAndReposts
+            ).length === 0 ? (
+            <p className="text-lightText text-sm mt-4">
+              {userProfileInfo?._id === authenticatedUser?._id
+                ? "You haven't posted any threads yet."
+                : "No threads yet."}
+            </p>
           ) : (
             <div className="flex flex-col w-full">
-              { 
-              // will map the current user posts and reposts if it is in its own profile
-                (userProfileInfo?._id === authenticatedUser?._id ? userPostsAndReposts : otherUserPostsAndReposts).map((item) => {
+              {
+                // will map the current user posts and reposts if it is in its own profile
+                (userProfileInfo?._id === authenticatedUser?._id
+                  ? userPostsAndReposts
+                  : otherUserPostsAndReposts
+                ).map((item) => {
                   // Check the type of the item and render the appropriate component
                   // post
                   if (item.type === ItemType.Post) {
@@ -53,7 +65,7 @@ const UserPostsAndReposts: FC<IUserPostsAndReposts> = ({
                     const isReposted = repostChecker(
                       userReposts,
                       post._id,
-                      authenticatedUser?._id ?? ""
+                      authenticatedUser?._id ?? "",
                     );
 
                     return (
@@ -73,7 +85,7 @@ const UserPostsAndReposts: FC<IUserPostsAndReposts> = ({
                     const isReposted = repostChecker(
                       userReposts,
                       repostItem.post._id,
-                      authenticatedUser?._id ?? ""
+                      authenticatedUser?._id ?? "",
                     );
 
                     return (
@@ -93,7 +105,8 @@ const UserPostsAndReposts: FC<IUserPostsAndReposts> = ({
                       />
                     );
                   }
-                })}
+                })
+              }
             </div>
           )}
         </>

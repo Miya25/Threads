@@ -14,7 +14,7 @@ const UserReplies: FC<IUserReplies> = ({ userProfileInfo }) => {
   const [getUserRepliesQuery, { isLoading }] = useLazyGetUserRepliesQuery();
   const dispatch = useAppDispatch();
   const { userReplies } = useAppSelector((state) => state.post);
-  const { user: authenticatedUser } = useAppSelector(state => state.auth)
+  const { user: authenticatedUser } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     async function getUserReplies(): Promise<void> {
@@ -40,9 +40,12 @@ const UserReplies: FC<IUserReplies> = ({ userProfileInfo }) => {
             visible={true}
           />
         </div>
-      ) : 
-      userReplies.length === 0 ? (
-        <p className="text-lightText text-sm mt-4">{userProfileInfo?._id === authenticatedUser?._id ? "You haven't posted any replies yet." : "No replies yet."}</p>
+      ) : userReplies.length === 0 ? (
+        <p className="text-lightText text-sm mt-4">
+          {userProfileInfo?._id === authenticatedUser?._id
+            ? "You haven't posted any replies yet."
+            : "No replies yet."}
+        </p>
       ) : (
         userReplies?.map((reply) => (
           <RootPostAndReplyCard

@@ -4,10 +4,11 @@ import { useLocation } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
 const Activity = (): JSX.Element => {
-  const location = useLocation()
+  const location = useLocation();
   useDocumentTitle("Threads Clone");
 
-  const isActive = (pathname: string):boolean => pathname === location.pathname
+  const isActive = (pathname: string): boolean =>
+    pathname === location.pathname;
 
   const chips = [
     {
@@ -40,7 +41,11 @@ const Activity = (): JSX.Element => {
             {chips.map((chip, index) => (
               <Link key={index} to={chip.linkTo} className="w-full">
                 <li
-                className={`${isActive(chip.linkTo) ? "text-black bg-white" : "text-white hover:bg-[#3a383830]"} w-full border border-borderColor 
+                  className={`${
+                    isActive(chip.linkTo)
+                      ? "text-black bg-white"
+                      : "text-white hover:bg-[#3a383830]"
+                  } w-full border border-borderColor 
                 cursor-pointer text-center rounded-lg py-[.35rem] text-sm`}
                 >
                   {chip.chipTitle}

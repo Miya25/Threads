@@ -37,14 +37,14 @@ const CreatePostForm: FC<ICreatePostForm> = ({
 }) => {
   const { postToEdit } = useAppSelector((state) => state.post);
   const { userDefaultProfileImage } = useAppSelector(
-    (state) => state.userProfile
+    (state) => state.userProfile,
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [textContent, setTextContent] = useState<string>(
-    isEditing ? postToEdit?.content || "" : ""
+    isEditing ? postToEdit?.content || "" : "",
   );
   const [imagePreview, setImagePreview] = useState<string>(
-    isEditing ? postToEdit?.image?.url || "" : ""
+    isEditing ? postToEdit?.image?.url || "" : "",
   );
   const { user, token } = useAppSelector((state) => state.auth);
   const [createPostMutation, { isLoading: isPosting }] =
@@ -80,7 +80,9 @@ const CreatePostForm: FC<ICreatePostForm> = ({
     setImagePreview("");
   }
 
-  async function updatePostHandler(e: FormEvent<HTMLFormElement>): Promise<void> {
+  async function updatePostHandler(
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
     e.preventDefault();
 
     const data = new FormData();
@@ -111,7 +113,9 @@ const CreatePostForm: FC<ICreatePostForm> = ({
   }
 
   // for submitting the reply
-  async function submitPostReplyHandler(e: FormEvent<HTMLFormElement>): Promise<void> {
+  async function submitPostReplyHandler(
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
     e.preventDefault();
     // the data will be passed to req body
     const data = new FormData();
@@ -137,7 +141,9 @@ const CreatePostForm: FC<ICreatePostForm> = ({
     }
   }
   // for posting root post/thread
-  async function submitPostHandler(e: FormEvent<HTMLFormElement> ): Promise<void> {
+  async function submitPostHandler(
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
     e.preventDefault();
     // the data will be passed to req body
     const data = new FormData();
@@ -169,30 +175,30 @@ const CreatePostForm: FC<ICreatePostForm> = ({
 
   function buttonName(): string {
     //in post by default
-    let buttonName = isPosting ? "Posting" : "Post"
+    let buttonName = isPosting ? "Posting" : "Post";
 
-    if(isEditing) {
-      buttonName = isUpdating ? "Saving" : "Save"
+    if (isEditing) {
+      buttonName = isUpdating ? "Saving" : "Save";
     }
-    if(isReplying) {
-      buttonName = isCreatingReply ? "Submitting" : "Submit"
+    if (isReplying) {
+      buttonName = isCreatingReply ? "Submitting" : "Submit";
     }
-      
-    return buttonName
+
+    return buttonName;
   }
 
   function isDisabled(): boolean {
-     //in post by default
-    let isDisabled = isPosting ? true : false
+    //in post by default
+    let isDisabled = isPosting ? true : false;
 
-    if(isEditing) {
-      isDisabled = isUpdating ? true : false
+    if (isEditing) {
+      isDisabled = isUpdating ? true : false;
     }
-    if(isReplying) {
-      isDisabled = isCreatingReply ? true : false
+    if (isReplying) {
+      isDisabled = isCreatingReply ? true : false;
     }
 
-    return isDisabled
+    return isDisabled;
   }
 
   return (
@@ -205,8 +211,8 @@ const CreatePostForm: FC<ICreatePostForm> = ({
           isEditing
             ? updatePostHandler
             : isReplying
-            ? submitPostReplyHandler
-            : submitPostHandler
+              ? submitPostReplyHandler
+              : submitPostHandler
         }
       >
         {isEditing && (
@@ -241,8 +247,8 @@ const CreatePostForm: FC<ICreatePostForm> = ({
                   isEditing
                     ? "Edit thread..."
                     : isReplying
-                    ? `Reply to ${postToReplyCreatorUsername}...`
-                    : "Start a thread..."
+                      ? `Reply to ${postToReplyCreatorUsername}...`
+                      : "Start a thread..."
                 }
                 onChange={(e) => setTextContent(e.target.value)}
                 value={textContent}
@@ -284,19 +290,31 @@ const CreatePostForm: FC<ICreatePostForm> = ({
             className="hidden"
           />
           <button
-            className={` ${textContent || imageFile ? "bg-white hover:bg-[#e5e2e2bd] ease-in-out duration-300 " : "bg-[#ffffff8a]"} px-6 py-2 font-semibold rounded-md text-xs md:text-sm flex gap-2 items-center 
-            ${textContent || imageFile || isPosting || isUpdating || isCreatingReply ? "cursor-pointer" : "cursor-not-allowed"}`}
+            className={` ${
+              textContent || imageFile
+                ? "bg-white hover:bg-[#e5e2e2bd] ease-in-out duration-300 "
+                : "bg-[#ffffff8a]"
+            } px-6 py-2 font-semibold rounded-md text-xs md:text-sm flex gap-2 items-center 
+            ${
+              textContent ||
+              imageFile ||
+              isPosting ||
+              isUpdating ||
+              isCreatingReply
+                ? "cursor-pointer"
+                : "cursor-not-allowed"
+            }`}
             disabled={isDisabled()}
             type="submit"
           >
             {buttonName()}
-            {isUpdating  && (
+            {isUpdating && (
               <Spinner fillColor="fill-black" pathColor="text-gray-400" />
             )}
             {isCreatingReply && (
               <Spinner fillColor="fill-black" pathColor="text-gray-400" />
             )}
-            {isPosting   && (
+            {isPosting && (
               <Spinner fillColor="fill-black" pathColor="text-gray-400" />
             )}
           </button>

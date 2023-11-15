@@ -2,7 +2,7 @@ import { useEffect, FC, ReactElement } from "react";
 import { useLocation } from "react-router";
 
 interface IScrollToTop {
-    children?: ReactElement | ReactElement[];
+  children?: ReactElement | ReactElement[];
 }
 // for scrolling back to top whenever the page changes
 const ScrollToTop: FC<IScrollToTop> = ({ children }) => {
@@ -12,7 +12,7 @@ const ScrollToTop: FC<IScrollToTop> = ({ children }) => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
-  return <>{children}</>
+  return <>{children}</>;
 };
 
 export default ScrollToTop;

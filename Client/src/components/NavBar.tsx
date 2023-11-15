@@ -3,8 +3,8 @@ import { useAppDispatch } from "../features/app/hooks";
 import { setToken, setUser } from "../features/auth/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../features/app/hooks";
-import { HiOutlineLogout } from "react-icons/hi"
-import { BiSolidDownArrow }  from "react-icons/bi"
+import { HiOutlineLogout } from "react-icons/hi";
+import { BiSolidDownArrow } from "react-icons/bi";
 // import logoDark from "/assets/logo-dark.svg";
 import logoLight from "/assets/logo-light.svg";
 
@@ -14,7 +14,7 @@ const NavBar = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { user, token } = useAppSelector((state) => state.auth);
   const { userDefaultProfileImage } = useAppSelector(
-    (state) => state.userProfile
+    (state) => state.userProfile,
   );
   const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
@@ -30,13 +30,20 @@ const NavBar = (): JSX.Element => {
     document.addEventListener("click", handleClickOutsideContextMenu, false);
     // cleanup function whenever the component unmounts
     return () => {
-      document.removeEventListener("click", handleClickOutsideContextMenu, false);
+      document.removeEventListener(
+        "click",
+        handleClickOutsideContextMenu,
+        false,
+      );
     };
   }, []);
 
   // to hide the context menu when the user clicks outside the element or other element
   function handleClickOutsideContextMenu(e: MouseEvent): void {
-    if (contextMenuRef.current && !contextMenuRef.current.contains(e.target as Node) ) {
+    if (
+      contextMenuRef.current &&
+      !contextMenuRef.current.contains(e.target as Node)
+    ) {
       setShowContextMenu(false);
     }
   }
@@ -53,7 +60,10 @@ const NavBar = (): JSX.Element => {
           <div className=" flex items-center justify-between p-4 w-full h-auto">
             <img src={logoLight} alt="logo" className="h-[30px] w-[30px]" />
             {user && token ? (
-              <div className="border border-borderColor hover:bg-[#3a383830] ease-in-out duration-300 p-2 flex gap-2 items-center rounded-lg relative cursor-pointer" onClick={toggleContextMenu}>
+              <div
+                className="border border-borderColor hover:bg-[#3a383830] ease-in-out duration-300 p-2 flex gap-2 items-center rounded-lg relative cursor-pointer"
+                onClick={toggleContextMenu}
+              >
                 <img
                   src={
                     user?.displayed_picture
@@ -65,7 +75,9 @@ const NavBar = (): JSX.Element => {
                 />
                 <div className="flex items-center gap-1">
                   <p className="text-white text-xs">{user?.username}</p>
-                  <p className="text-white text-[.5rem]"><BiSolidDownArrow /></p>
+                  <p className="text-white text-[.5rem]">
+                    <BiSolidDownArrow />
+                  </p>
                 </div>
 
                 {showContextMenu && (

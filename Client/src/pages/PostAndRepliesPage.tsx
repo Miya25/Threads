@@ -21,14 +21,20 @@ const PostAndReplies = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { user: authenticatedUser, token } = useAppSelector((state) => state.auth);
+  const { user: authenticatedUser, token } = useAppSelector(
+    (state) => state.auth,
+  );
   const { userPostsAndReposts } = useAppSelector((state) => state.userProfile);
   const { post, replies } = useAppSelector((state) => state.post);
 
-  const [getSinglePostQuery, { isFetching: isGetSinglePostLoading }] = useLazyGetSinglePostQuery();
-  const [getReplies, { isFetching: isGetRepliesLoading }] = useLazyGetRepliesQuery();
+  const [getSinglePostQuery, { isFetching: isGetSinglePostLoading }] =
+    useLazyGetSinglePostQuery();
+  const [getReplies, { isFetching: isGetRepliesLoading }] =
+    useLazyGetRepliesQuery();
   const userReposts = filteredUserReposts(userPostsAndReposts);
-  useDocumentTitle(post ? `${post.creator.username} · ${post.content} · Threads` : "Threads");
+  useDocumentTitle(
+    post ? `${post.creator.username} · ${post.content} · Threads` : "Threads",
+  );
 
   useEffect(() => {
     async function getSinglePostAndReplies() {
@@ -71,7 +77,7 @@ const PostAndReplies = (): JSX.Element => {
           </div>
 
           {!post || isGetSinglePostLoading ? (
-            <ThreadCardLoader index={2}/>
+            <ThreadCardLoader index={2} />
           ) : (
             <RootPostAndReplyCard post={post} isRootPost={true} />
           )}
@@ -94,7 +100,7 @@ const PostAndReplies = (): JSX.Element => {
                 const isReposted = repostChecker(
                   userReposts,
                   reply._id,
-                  authenticatedUser?._id ?? ""
+                  authenticatedUser?._id ?? "",
                 );
 
                 return (

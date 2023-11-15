@@ -29,7 +29,7 @@ const Home: FC<IHome> = ({ getUserInfo }) => {
 
       try {
         const userPostsAndRepostsPayload = await getPostsAndRepostsQuery(
-          authenticatedUser?._id
+          authenticatedUser?._id,
         ).unwrap();
         if (userPostsAndRepostsPayload) {
           dispatch(setUserPostsAndReposts(userPostsAndRepostsPayload));
@@ -45,7 +45,6 @@ const Home: FC<IHome> = ({ getUserInfo }) => {
     getPostsAndRepostsQuery,
     authenticatedUser,
   ]);
-
 
   // get the user info  and posts once rendered
   useEffect(() => {
@@ -75,8 +74,8 @@ const Home: FC<IHome> = ({ getUserInfo }) => {
             <div className="w-full flex flex-col">
               {[...new Array(6)].map((_, index) => (
                 <ThreadCardLoader index={index} key={index} />
-              ))} 
-          </div>
+              ))}
+            </div>
           ) : (
             <Feed />
           )}

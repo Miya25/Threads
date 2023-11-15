@@ -26,7 +26,7 @@ import {
   unlikeParentOfRootPostReplyInUserReplies,
   likeUserReplyInUserReplies,
   unlikeUserReplyInUserReplies,
-  deleteUserReplyInUserReplies
+  deleteUserReplyInUserReplies,
 } from "../../features/post/postSlice";
 import {
   likePostOrRepostInUserProfile,
@@ -59,7 +59,7 @@ interface IPostAndRepostCard {
   isReposted?: boolean;
   isRootPost?: boolean;
   isParent?: boolean;
-  replyingTo?: string | null
+  replyingTo?: string | null;
 }
 
 const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
@@ -70,40 +70,50 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
   isReposted,
   isRootPost,
   isParent,
-  replyingTo
+  replyingTo,
 }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [likePostMutation] = useLikePostMutation();
   const [unlikePostMutation] = useUnlikePostMutation();
-  const [deletePostMutation, { isLoading: isDeleting }] = useDeletePostMutation();
+  const [deletePostMutation, { isLoading: isDeleting }] =
+    useDeletePostMutation();
   const [createRepostMutation] = useCreateRepostMutation();
   const [removeRepostMutation] = useRemoveRepostMutation();
 
   const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
   const formattedTimeStamp = useFormatTimeStamp(post.createdAt);
-  const { userPostsAndReposts, userDefaultProfileImage } = useAppSelector((state) => state.userProfile);
+  const { userPostsAndReposts, userDefaultProfileImage } = useAppSelector(
+    (state) => state.userProfile,
+  );
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
 
   // helper function that filters the posts and reposts of the user and returns an array of user reposts
   const userReposts = filteredUserReposts(userPostsAndReposts);
 
   const didLike: boolean = post.liked_by.some(
-    (user) => user._id === authenticatedUser?._id
+    (user) => user._id === authenticatedUser?._id,
   );
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutsideContextMenu, false);
     // cleanup function whenever the component unmounts
     return () => {
-      document.removeEventListener("click", handleClickOutsideContextMenu, false);
+      document.removeEventListener(
+        "click",
+        handleClickOutsideContextMenu,
+        false,
+      );
     };
   }, []);
 
   // to hide the context menu when the user clicks outside the element or other element
   function handleClickOutsideContextMenu(e: MouseEvent): void {
-    if (contextMenuRef.current && !contextMenuRef.current.contains(e.target as Node) ) {
+    if (
+      contextMenuRef.current &&
+      !contextMenuRef.current.contains(e.target as Node)
+    ) {
       setShowContextMenu(false);
     }
   }
@@ -118,29 +128,57 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
       return;
     }
     if (didLike) {
-      dispatch(unlikePostOrRepostInUserProfile({ postId, user: authenticatedUser })); // for user's profile optimistic update
-      dispatch(unlikePostInPostAndReplyPage({ postId, user: authenticatedUser })); // for the root post in post and reply page
+      dispatch(
+        unlikePostOrRepostInUserProfile({ postId, user: authenticatedUser }),
+      ); // for user's profile optimistic update
+      dispatch(
+        unlikePostInPostAndReplyPage({ postId, user: authenticatedUser }),
+      ); // for the root post in post and reply page
       dispatch(unlikePost({ postId, user: authenticatedUser })); // for feed's optimistic update
       dispatch(unlikePostReply({ postId, user: authenticatedUser })); // for post and reply page
-      dispatch(unlikeParentOfRootPostInPostAndRepliesPage({ postId, user: authenticatedUser }))
-      dispatch(unlikeParentOfRootPostReplyInUserReplies({ postId, user: authenticatedUser }))
-      dispatch(unlikeUserReplyInUserReplies({ postId, user: authenticatedUser }))
+      dispatch(
+        unlikeParentOfRootPostInPostAndRepliesPage({
+          postId,
+          user: authenticatedUser,
+        }),
+      );
+      dispatch(
+        unlikeParentOfRootPostReplyInUserReplies({
+          postId,
+          user: authenticatedUser,
+        }),
+      );
+      dispatch(
+        unlikeUserReplyInUserReplies({ postId, user: authenticatedUser }),
+      );
       unlikePostMutation({ postId, token });
     } else {
-      dispatch(likePostOrRepostInUserProfile({ postId, user: authenticatedUser })); // for user's profile optimistic update
+      dispatch(
+        likePostOrRepostInUserProfile({ postId, user: authenticatedUser }),
+      ); // for user's profile optimistic update
       dispatch(likePostInPostAndReplyPage({ postId, user: authenticatedUser })); // for the root post in post and reply page
       dispatch(likePost({ postId, user: authenticatedUser })); // for feed's optimistic update
       dispatch(likePostReply({ postId, user: authenticatedUser })); // for post and reply page
-      dispatch(likeParentOfRootPostInPostAndRepliesPage({ postId, user: authenticatedUser }))
-      dispatch(likeParentOfRootPostReplyInUserReplies({ postId, user: authenticatedUser }))
-      dispatch(likeUserReplyInUserReplies({ postId, user: authenticatedUser }))
+      dispatch(
+        likeParentOfRootPostInPostAndRepliesPage({
+          postId,
+          user: authenticatedUser,
+        }),
+      );
+      dispatch(
+        likeParentOfRootPostReplyInUserReplies({
+          postId,
+          user: authenticatedUser,
+        }),
+      );
+      dispatch(likeUserReplyInUserReplies({ postId, user: authenticatedUser }));
       likePostMutation({ postId, token });
     }
   }
 
   async function deletePostHandler(
     postId: string,
-    token: string
+    token: string,
   ): Promise<void> {
     if (!authenticatedUser) return;
 
@@ -148,11 +186,11 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
       // delete the original post
       await deletePostMutation({ postId, token });
       dispatch(
-        deletePostOrRepostInUserProfile({ postId, repostId: repost?._id })
+        deletePostOrRepostInUserProfile({ postId, repostId: repost?._id }),
       ); // for user's profile optimistic update
       dispatch(deletePost(postId)); // for feed's optimistic update
       dispatch(deletePostReply(postId));
-      dispatch(deleteUserReplyInUserReplies(postId))
+      dispatch(deleteUserReplyInUserReplies(postId));
       setShowContextMenu(false);
     } catch (error) {
       console.error(error);
@@ -165,13 +203,13 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
     if (isReposted) {
       // retrieving the repost that will be remove by checking if this card is being reposted by the user
       const repostToRemove = userReposts?.find(
-        (repost) => repost.post._id === post._id
+        (repost) => repost.post._id === post._id,
       );
 
       if (repostToRemove) {
         await removeRepostMutation({ token, repostId: repostToRemove?._id });
         dispatch(
-          deletePostOrRepostInUserProfile({ repostId: repostToRemove?._id })
+          deletePostOrRepostInUserProfile({ repostId: repostToRemove?._id }),
         );
       }
     } else {
@@ -180,10 +218,9 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
           postId,
           token,
         }).unwrap();
-        
+
         showToast("Reposted");
         dispatch(addRepostInUserProfile(newRepost));
-
       } catch (error) {
         console.error;
       }
@@ -193,24 +230,24 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
   // gets the users' image unique url who replied on a certain post
   function getUserImageUrls(post: Post) {
     const imageUrls: string[] = [];
-    const maxImages = 3
-  
+    const maxImages = 3;
+
     for (const reply of post.children) {
-      const imageUrl = reply.creator?.displayed_picture?.url ?? userDefaultProfileImage;
+      const imageUrl =
+        reply.creator?.displayed_picture?.url ?? userDefaultProfileImage;
       if (imageUrl) {
         if (!imageUrls.includes(imageUrl)) {
           imageUrls.push(imageUrl);
         }
-  
+
         if (imageUrls.length === maxImages) {
           break;
         }
       }
     }
-  
+
     return imageUrls;
   }
-  
 
   function openEditPostModal(): void {
     dispatch(setPostToEdit(post));
@@ -318,7 +355,11 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
                     />
                   </svg>
                 </div>
-                <img src="/assets/loop.svg" alt="loop" className="mr-[.86rem]" />
+                <img
+                  src="/assets/loop.svg"
+                  alt="loop"
+                  className="mr-[.86rem]"
+                />
               </div>
             ) : (
               <div className="h-full relative">
@@ -359,7 +400,10 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
                   src={imageUrl}
                   alt=""
                   className={`object-cover rounded-full 
-                  ${bubbleStyleUserImageWhoReplied(index, getUserImageUrls(post))}`}
+                  ${bubbleStyleUserImageWhoReplied(
+                    index,
+                    getUserImageUrls(post),
+                  )}`}
                 />
               ))}
             </div>
@@ -371,7 +415,7 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
           className={`w-full flex-col flex gap-1 ${
             isParent ? "mb-[4rem]" : null
           }`}
-          >
+        >
           {/* post creator and other details */}
           <div
             className={`flex items-center w-[100%] justify-between ${
@@ -380,7 +424,9 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
           >
             <Link
               to={`/profile/${post.creator.username}`}
-              className={`flex items-center gap-3 ${isRootPost ? "ml-[-.3rem]" : null}`}
+              className={`flex items-center gap-3 ${
+                isRootPost ? "ml-[-.3rem]" : null
+              }`}
             >
               {isRootPost && (
                 <div className="w-[35px] h-[35px]">
@@ -401,14 +447,16 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
             </Link>
             <div className="flex items-center gap-1">
               <p className="text-sm text-lightText">{formattedTimeStamp}</p>
-              {authenticatedUser?._id === post.creator._id && !isRootPost && !isParent && (
-                <p
-                  className="cursor-pointer text-base text-white rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300 p-1"
-                  onClick={toggleContextMenu}
-                >
-                  <BsThreeDots className="transition-transform transform-gpu ease-linear duration-100 active:scale-90" />
-                </p>
-              )}
+              {authenticatedUser?._id === post.creator._id &&
+                !isRootPost &&
+                !isParent && (
+                  <p
+                    className="cursor-pointer text-base text-white rounded-full hover:bg-[#4e4a4a48] ease-in-out duration-300 p-1"
+                    onClick={toggleContextMenu}
+                  >
+                    <BsThreeDots className="transition-transform transform-gpu ease-linear duration-100 active:scale-90" />
+                  </p>
+                )}
             </div>
           </div>
           {/*end of post creator and other details */}
@@ -417,10 +465,13 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
           <div className="w-full">
             <Link to={`/${post.creator.username}/post/${post._id}`}>
               {/* will pop out when the parent post or the reposted post has a parent post  */}
-              {replyingTo &&
-              <div className="mb-2">
-                <p className="text-sm text-lightText">Replying to @{replyingTo}</p>
-              </div>}
+              {replyingTo && (
+                <div className="mb-2">
+                  <p className="text-sm text-lightText">
+                    Replying to @{replyingTo}
+                  </p>
+                </div>
+              )}
 
               <p className="text-sm text-[#ffffff] tracking-wide whitespace-pre-wrap break-words w-[250px] sm:w-[490px]">
                 {post.content}
@@ -486,7 +537,7 @@ const ThreadAndRepostCard: FC<IPostAndRepostCard> = ({
             </p>
           </div>
           {/* end of icons */}
-          
+
           {/* reply and like count */}
           <p className="text-[#7b7575] text-sm flex items-center gap-1">
             {/* post.children is an array of replies in a certain post */}

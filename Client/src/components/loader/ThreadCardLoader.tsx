@@ -15,7 +15,7 @@ const ThreadCardLoader: FC<IThreadCardLoader> = ({ index }) => {
         <div className="animate-pulse  bg-[#444444a5] h-[10px] w-[100px] rounded"></div>
         {index % 2 === 0 && (
           <div className="animate-pulse  bg-[#444444a5] h-[250px] w-full rounded"></div>
-        )} 
+        )}
 
         {index % 2 !== 0 && (
           <div className="w-full flex flex-col gap-1">

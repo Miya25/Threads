@@ -2,7 +2,10 @@ import { FC } from "react";
 import { User } from "../../types/types";
 import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../features/app/hooks";
-import { useFollowUserMutation, useUnfollowUserMutation } from "../../services/authAndUserApi";
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../services/authAndUserApi";
 import {
   followRandomUser,
   unfollowRandomUser,
@@ -17,14 +20,18 @@ interface IUserCard {
 }
 
 const UserCard: FC<IUserCard> = ({ user }) => {
-  const dispatch = useAppDispatch()
-  const { userDefaultProfileImage } = useAppSelector((state) => state.userProfile);
-  const { user: authenticatedUser, token } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const { userDefaultProfileImage } = useAppSelector(
+    (state) => state.userProfile,
+  );
+  const { user: authenticatedUser, token } = useAppSelector(
+    (state) => state.auth,
+  );
   const [followMutation] = useFollowUserMutation();
   const [unfollowMutation] = useUnfollowUserMutation();
 
   const isFollowing = user.followers.some(
-    (follower) => follower._id === authenticatedUser?._id
+    (follower) => follower._id === authenticatedUser?._id,
   );
 
   function toggleFollowAndUnfollowHandler(): void {
@@ -32,13 +39,21 @@ const UserCard: FC<IUserCard> = ({ user }) => {
 
     if (isFollowing) {
       dispatch(followUser(authenticatedUser));
-      dispatch(unfollowRandomUser({ userTofollowId: user._id , authenticatedUser}));
-      dispatch(unfollowSearchedUser({ userTofollowId: user._id , authenticatedUser}));
+      dispatch(
+        unfollowRandomUser({ userTofollowId: user._id, authenticatedUser }),
+      );
+      dispatch(
+        unfollowSearchedUser({ userTofollowId: user._id, authenticatedUser }),
+      );
       unfollowMutation({ token, userToFollowId: user._id });
     } else {
       dispatch(unfollowUser(authenticatedUser));
-      dispatch(followRandomUser({ userTofollowId: user._id , authenticatedUser}));
-      dispatch(followSearchedUser({ userTofollowId: user._id , authenticatedUser}));
+      dispatch(
+        followRandomUser({ userTofollowId: user._id, authenticatedUser }),
+      );
+      dispatch(
+        followSearchedUser({ userTofollowId: user._id, authenticatedUser }),
+      );
       followMutation({ token, userToFollowId: user._id });
     }
   }
@@ -63,7 +78,10 @@ const UserCard: FC<IUserCard> = ({ user }) => {
           </div>
         </Link>
         {user._id !== authenticatedUser?._id && (
-          <button className="border border-borderColor text-sm text-white py-[.30rem] px-5 rounded-lg hover:bg-[#3a383830]" onClick={toggleFollowAndUnfollowHandler}>
+          <button
+            className="border border-borderColor text-sm text-white py-[.30rem] px-5 rounded-lg hover:bg-[#3a383830]"
+            onClick={toggleFollowAndUnfollowHandler}
+          >
             {isFollowing ? "Unfollow" : "Follow"}
           </button>
         )}
