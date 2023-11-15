@@ -7,6 +7,6 @@ This is a [Threads](https://threads.net) Clone project built with [React](https:
 
 ## ⚙️ Technologies I used on this project
    
-<img src="https://skillicons.dev/icons?i=express,nodejs,typescript,javascript,rreact,mongodb,tailwind&theme=dark" />
+<img src="https://skillicons.dev/icons?i=express,nodejs,typescript,javascript,react,mongodb,tailwind&theme=dark" />
 </div>
  
