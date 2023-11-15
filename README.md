@@ -19,13 +19,13 @@
     yarn dev or npm run dev
     ```
 <br />
-
-- Open your Terminal in the file directory and type the lines below in order.(For Client/Frontend)
-
-- ```bash
+- Open your Terminal in the file directory and type the lines below in order.
+(For FrontEnd/Cleint)
+  - ```bash
     yarn install or npm i
     # then
-    yarn dev or npm run dev
+    yarn start or npm run start
     ```
-
 <br />
+
+
