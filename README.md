@@ -19,7 +19,8 @@
     yarn dev or npm run dev
     ```
 <br />
-- Open your Terminal in the file directory and type the lines below in order.
+
+ - Open your Terminal in the file directory and type the lines below in order.
 (For FrontEnd/Cleint)
   - ```bash
     yarn install or npm i
