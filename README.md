@@ -18,8 +18,8 @@
     # then
     yarn dev or npm run dev
     ```
-
 <br />
+
 - Open your Terminal in the file directory and type the lines below in order.(For Client/Frontend)
 
 - ```bash
