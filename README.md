@@ -1,3 +1,5 @@
+THIS PROJECT IS OUT OF DATE INSTEAD YOU SHOULD CHECK OUT [NETSOCIAL](https://netsocial.app)
+
 <div align="center">
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Threads_%28app%29.svg" alt="logo" width="50" height="auto" />
